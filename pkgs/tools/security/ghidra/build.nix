@@ -4,6 +4,7 @@
   lib,
   callPackage,
   gradle,
+  gnutar,
   makeBinaryWrapper,
   openjdk21,
   unzip,
@@ -18,9 +19,11 @@
 }:
 
 let
+  antlrReproducible = callPackage ./antlr-reproducible.nix { };
+
   pkg_path = "$out/lib/ghidra";
   pname = "ghidra";
-  version = "12.1.2";
+  version = "12.1.4";
 
   isMacArm64 = stdenv.hostPlatform.isDarwin && stdenv.hostPlatform.isAarch64;
 
@@ -30,7 +33,7 @@ let
     owner = "NationalSecurityAgency";
     repo = "Ghidra";
     rev = "Ghidra_${version}_build";
-    hash = "sha256-7/5TR273Sqqr03lE7qpOJUnwTzdr3BzKk+6GhhdOfo8=";
+    hash = "sha256-2B58j0Om2eAeATkzMvF3AQl1ddfMpz8765/1zrASNEo=";
     # populate values that require us to use git. By doing this in postFetch we
     # can delete .git afterwards and maintain better reproducibility of the src.
     leaveDotGit = true;
@@ -54,6 +57,15 @@ let
 
     # Remove build dates from output filenames for easier reference
     ./0003-Remove-build-datestamp.patch
+
+    # Remove timestamps from generated JavaHelp files
+    ./0004-Remove-help-timestamps.patch
+
+    # Set preserveFileTimestamps to false for reproducibility
+    ./0005-Reproducible-archive-timestamps.patch
+
+    # Make PyGhidra source archives reproducible
+    ./0006-Reproducible-PyGhidra-sdist.patch
   ];
 
   postPatch = ''
@@ -73,6 +85,12 @@ let
       }
     }
     HERE
+
+    # Use a deterministic ANTLR 3.5.2 tool JAR.
+    substituteInPlace Ghidra/Framework/SoftwareModeling/build.gradle \
+      --replace-fail \
+      'antlr "org.antlr:antlr:3.5.2"' \
+      "antlr files('${antlrReproducible}/share/java/antlr-3.5.2.jar')"
   '';
 
 in
@@ -106,6 +124,7 @@ stdenv.mkDerivation (finalAttrs: {
 
   nativeBuildInputs = [
     gradle
+    gnutar
     unzip
     makeBinaryWrapper
     copyDesktopItems

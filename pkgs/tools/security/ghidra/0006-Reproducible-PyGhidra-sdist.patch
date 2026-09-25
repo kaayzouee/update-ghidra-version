@@ -1,0 +1,55 @@
+diff --git a/gradle/hasPythonPackage.gradle b/gradle/hasPythonPackage.gradle
+--- a/gradle/hasPythonPackage.gradle
++++ b/gradle/hasPythonPackage.gradle
+@@ -71,2 +71,51 @@ task buildPyPackage {
+ 	}
++	doLast {
++		def sourceDateEpoch = System.getenv("SOURCE_DATE_EPOCH")
++		if (sourceDateEpoch == null) {
++			throw new GradleException("SOURCE_DATE_EPOCH is not set")
++		}
++
++		// Project.exec() was removed in Gradle 9; providers.exec() works on 8.x and 9.x.
++		def runTar = { List<String> tarArgs ->
++			def tar = providers.exec {
++				commandLine(["tar"] + tarArgs)
++				ignoreExitValue = true
++			}
++			if (tar.result.get().exitValue != 0) {
++				throw new GradleException("tar failed: " + tar.standardError.asText.get().strip())
++			}
++		}
++
++		fileTree("build/pypkg/dist").matching {
++			include "*.tar.gz"
++		}.files.each { archive ->
++			def workDir = file("$buildDir/pypkg/reproducible-${archive.name}")
++			delete(workDir)
++			mkdir(workDir)
++
++			runTar(["-xzf", archive.absolutePath, "-C", workDir.absolutePath])
++
++			def roots = workDir.listFiles().findAll { it.isDirectory() }
++			if (roots.size() != 1) {
++				throw new GradleException("Expected exactly one top-level directory in ${archive.name}")
++			}
++
++			def root = roots[0]
++			def normalized = file("$buildDir/pypkg/${archive.name}.normalized")
++
++			runTar(["-I", "gzip -n", "-cf", normalized.absolutePath,
++				"--sort=name",
++				"--mtime=@${sourceDateEpoch}",
++				"--owner=0",
++				"--group=0",
++				"--numeric-owner",
++				"-C", workDir.absolutePath,
++				root.name])
++
++			// File.renameTo() reports failure only through its return value
++			java.nio.file.Files.move(normalized.toPath(), archive.toPath(),
++				java.nio.file.StandardCopyOption.REPLACE_EXISTING)
++			delete(workDir)
++		}
++	}
+ }
