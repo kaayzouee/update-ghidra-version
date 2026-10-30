@@ -14,6 +14,8 @@ buildGhidraExtension (finalAttrs: {
     hash = "sha256-M2GC2LHitZ9kJ5lOMb8koi4sxXGwXn119KXNb9BYArA=";
   };
 
+  patches = [ ./ghidra-12.2-compat.patch ];
+
   meta = {
     description = "Ghidra utilities for analyzing PC firmware";
     homepage = "https://github.com/al3xtjames/ghidra-firmware-utils";

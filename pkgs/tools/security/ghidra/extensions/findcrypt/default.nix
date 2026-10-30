@@ -14,6 +14,8 @@ buildGhidraExtension (finalAttrs: {
     hash = "sha256-TWC6C4uxlYw9D5iHrFOuR0FmjMo5jhCg0A5y8hPv/to=";
   };
 
+  patches = [ ./ghidra-12.2-compat.patch ];
+
   meta = {
     description = "Ghidra analysis plugin to locate cryptographic constants";
     homepage = "https://github.com/antoniovazquezblanco/GhidraFindcrypt";

@@ -1,0 +1,6 @@
+diff --git a/src/main/java/reva/revaFileSystem.java b/src/main/java/reva/revaFileSystem.java
+--- a/src/main/java/reva/revaFileSystem.java
++++ b/src/main/java/reva/revaFileSystem.java
+@@ -63,1 +63,1 @@
+-	public void mount(TaskMonitor monitor) {
++	public void mount(TaskMonitor monitor) throws IOException {

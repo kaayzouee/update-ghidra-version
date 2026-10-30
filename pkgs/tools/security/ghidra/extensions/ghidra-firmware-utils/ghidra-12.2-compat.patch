@@ -1,0 +1,12 @@
+diff --git a/src/main/java/firmware/cbfs/CBFSFileSystem.java b/src/main/java/firmware/cbfs/CBFSFileSystem.java
+--- a/src/main/java/firmware/cbfs/CBFSFileSystem.java
++++ b/src/main/java/firmware/cbfs/CBFSFileSystem.java
+@@ -57,1 +57,1 @@
+-			monitor.checkCanceled();
++			monitor.checkCancelled();
+diff --git a/src/main/java/firmware/uefi_fv/UEFIFirmwareVolumeHeader.java b/src/main/java/firmware/uefi_fv/UEFIFirmwareVolumeHeader.java
+--- a/src/main/java/firmware/uefi_fv/UEFIFirmwareVolumeHeader.java
++++ b/src/main/java/firmware/uefi_fv/UEFIFirmwareVolumeHeader.java
+@@ -107,1 +107,1 @@
+-			monitor.checkCanceled();
++			monitor.checkCancelled();

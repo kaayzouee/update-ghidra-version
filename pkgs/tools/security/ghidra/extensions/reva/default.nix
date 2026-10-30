@@ -15,6 +15,8 @@ buildGhidraExtension (finalAttrs: {
     hash = "sha256-eYZeyhXlGwLVa/k77Y5x2OeGo/m9fh3VauzAqB+obxw=";
   };
 
+  patches = [ ./ghidra-12.2-compat.patch ];
+
   mitmCache = gradle.fetchDeps {
     pkg = finalAttrs.finalPackage;
     data = ./deps.json;

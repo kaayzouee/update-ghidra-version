@@ -13,6 +13,9 @@ buildGhidraExtension (finalAttrs: {
     rev = finalAttrs.version;
     hash = "sha256-UBzGs9PKkGjWDL+12mMXMfNm/vqiKlzs16rWRBnCiTw=";
   };
+
+  patches = [ ./ghidra-12.2-compat.patch ];
+
   preConfigure = ''
     cd lightkeeper
   '';

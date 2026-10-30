@@ -1,0 +1,6 @@
+diff --git a/src/main/java/ghidra/app/util/DropDownOption.java b/src/main/java/ghidra/app/util/DropDownOption.java
+--- a/src/main/java/ghidra/app/util/DropDownOption.java
++++ b/src/main/java/ghidra/app/util/DropDownOption.java
+@@ -46,1 +46,1 @@
+-	public Component getCustomEditorComponent() {
++	public Component getCustomEditorComponent(AddressFactoryService addressFactoryService) {

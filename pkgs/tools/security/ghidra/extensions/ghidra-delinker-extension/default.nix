@@ -20,6 +20,7 @@ ghidra.buildGhidraExtension (finalAttrs: {
   };
 
   patches = [
+    ./ghidra-12.2-compat.patch
     # The GitHub Maven repository is not available unauthenticated,
     # so patch in the dependency this way and replace the fake path
     # with the locally built derivation later.

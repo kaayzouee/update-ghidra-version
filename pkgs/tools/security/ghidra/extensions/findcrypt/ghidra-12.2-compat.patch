@@ -1,0 +1,9 @@
+diff --git a/src/main/java/findcrypt/FindCryptAnalyzer.java b/src/main/java/findcrypt/FindCryptAnalyzer.java
+--- a/src/main/java/findcrypt/FindCryptAnalyzer.java
++++ b/src/main/java/findcrypt/FindCryptAnalyzer.java
+@@ -84,1 +84,1 @@
+-			monitor.checkCanceled();
++			monitor.checkCancelled();
+@@ -90,1 +90,1 @@
+-				monitor.checkCanceled();
++				monitor.checkCancelled();
